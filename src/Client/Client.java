@@ -24,6 +24,7 @@ public class Client {
 
 
             LoginLogoutClient loginLogout = new LoginLogoutClient();
+            UploadDownload uploadDownload = new UploadDownload();
             if (hostName.length() == 0) // if user did not enter a name
                 hostName = "localhost";  //   use the default host name
             System.out.println("What is the port number of the server host?");
@@ -48,9 +49,9 @@ public class Client {
                 }
             }
 
-
-            loginLogout.login(hostName,portNum);
-            loginLogout.logout(hostName,portNum);
+            //loginLogout.login(hostName,portNum);
+            //loginLogout.logout(hostName,portNum);
+            uploadDownload.uploadFileToServer(hostName,portNum);
             // end while
         } // end try
         catch (Exception ex) {

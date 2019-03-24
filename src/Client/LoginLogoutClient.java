@@ -52,7 +52,6 @@ public class LoginLogoutClient {
         } // end catch
     }
 
-
     public void logout(String hostName, String portNum) throws IOException {
         int result = JOptionPane.showConfirmDialog(null,"Do you wang to log out ?", "",JOptionPane.YES_NO_OPTION);
         this.username = JOptionPane.showInputDialog(("please enter name "));

@@ -1,6 +1,5 @@
 package Client;
-
-import java.net.*;
+import javax.swing.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -38,4 +37,14 @@ public class ClientHelper {
         mySocket.close( );
     }  //end done
 
+
+    public String sendFileToServer(String pathToFile) throws IOException {
+
+        byte[] data = FilePacket.getBytesFromPath(pathToFile);
+        int length = data.length;
+        String name = FilePacket.getFileNameFromPath(pathToFile);
+        byte[] bytesForPacket = FilePacket.wrappedPacket("102", length, name, data);
+
+        return mySocket.sendFile(serverHost, serverPort, bytesForPacket);
+    }
 } //end class

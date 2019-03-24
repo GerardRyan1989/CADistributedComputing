@@ -38,7 +38,6 @@ public class Server {
                         break;
                     case 103:
                         System.out.println("File Download request made.");
-
                         break;
                     case 104:
                         System.out.println("Logout request made.");
