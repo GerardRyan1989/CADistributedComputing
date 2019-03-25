@@ -16,14 +16,9 @@ public class ClientDatagramSocket extends DatagramSocket {
     ClientDatagramSocket(int portNo) throws SocketException{
         super(portNo);
     }
-    public void sendMessage(InetAddress receiverHost,
-                            int receiverPort,
-                            String message)
-            throws IOException {
+    public void sendMessage(InetAddress receiverHost, int receiverPort, String message) throws IOException {
         byte[ ] sendBuffer = message.getBytes( );
-        DatagramPacket datagram =
-                new DatagramPacket(sendBuffer, sendBuffer.length,
-                        receiverHost, receiverPort);
+        DatagramPacket datagram = new DatagramPacket(sendBuffer, sendBuffer.length, receiverHost, receiverPort);
         this.send(datagram);
     } // end sendMessage
 
@@ -33,9 +28,7 @@ public class ClientDatagramSocket extends DatagramSocket {
         this.receive(datagram);
         String message = new String(receiveBuffer);
         return message.trim();
-    } //end receiveMessage
-
-
+    }
 
     public String sendFile(InetAddress receiverHost, int receiverPort, byte[] file) throws IOException {
         DatagramPacket datagram = new DatagramPacket(file, file.length, receiverHost, receiverPort);

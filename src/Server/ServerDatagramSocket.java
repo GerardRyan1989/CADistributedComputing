@@ -21,26 +21,30 @@ public class ServerDatagramSocket extends DatagramSocket {
     } // end sendMessage
 
     public String receiveMessage( ) throws IOException {
-        byte[ ] receiveBuffer = new byte[MAX_LEN];
+        byte[] receiveBuffer = new byte[MAX_LEN];
         DatagramPacket datagram = new DatagramPacket(receiveBuffer, MAX_LEN);
         this.receive(datagram);
         String message = new String(receiveBuffer);
         return message;
     } //end receiveMessage
 
-    public DatagramMessage receiveMessageAndSender( )
-            throws IOException {
-
+    public ServerDatagramPacket receiveMessageAndSender( ) throws IOException {
         byte[ ] receiveBuffer = new byte[MAX_LEN];
-        DatagramPacket datagram =
-                new DatagramPacket(receiveBuffer, MAX_LEN);
+        DatagramPacket datagram = new DatagramPacket(receiveBuffer, MAX_LEN);
         this.receive(datagram);
         // create a DatagramMessage object, to contain message
-        //   received and sender's address
-        DatagramMessage returnVal = new DatagramMessage();
-        returnVal.putVal(new String(receiveBuffer, 0, datagram.getLength()),
-                datagram.getAddress( ),
-                datagram.getPort( ));
-        return returnVal;
+        // received and sender's address
+        ServerDatagramPacket packet = new ServerDatagramPacket(datagram.getAddress(), datagram.getPort(), datagram.getData()) ;
+        return packet;
     } //end receiveMessage
+
+
+    public DatagramPacket receivePacket() throws IOException {
+        byte[ ] receiveBuffer = new byte[MAX_LEN];
+        DatagramPacket datagram = new DatagramPacket(receiveBuffer, MAX_LEN);
+        this.receive(datagram);
+        return datagram;
+    }
 } //end class
+
+

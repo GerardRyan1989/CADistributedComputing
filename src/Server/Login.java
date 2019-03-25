@@ -1,6 +1,8 @@
 package Server;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -8,31 +10,33 @@ import java.util.Iterator;
 public class Login {
 
     private ArrayList<UserLoginDetails> validUsers = new ArrayList<UserLoginDetails>();
-    protected ArrayList<LoggedInUser> loggedInUsers = new ArrayList<LoggedInUser>();
+    protected ArrayList<LoggedInUser> loggedInUsers = new ArrayList<LoggedInUser>();;
 
     Login(){
+
         validUsers.add(new UserLoginDetails("Gerard","password"));
         validUsers.add(new UserLoginDetails("Darren","password1"));
         validUsers.add(new UserLoginDetails("Jonathan","password2"));
         validUsers.add(new UserLoginDetails("Jimmy","password3"));
     }
 
-    protected void loginRequest(DatagramMessage message, ServerDatagramSocket socket) throws IOException {
+    protected void loginRequest(ServerDatagramPacket packet, ServerDatagramSocket socket) throws IOException {
             String username;
             String password;
-            String thisMessage = message.getMessage();
-            String[] words = thisMessage.split(" ");
-            username = words[1];
-            password = words[2];
+
+
+            ReadFile readFile = new ReadFile();
+            username = readFile.getUserName(packet.getData());
+            password = readFile.getPassword(packet.getData());
 
             if(isUserValid(username, password)){
                 System.out.print("Valid User\n");
-                socket.sendMessage(message.getAddress(), message.getPort(), "110");
-                loggedInUsers.add(new LoggedInUser(username,password, message.getAddress(), message.getPort()));
+                socket.sendMessage(packet.getAddress(), packet.getPort(), "110");
+                loggedInUsers.add(new LoggedInUser(username,password, packet.getAddress(), packet.getPort()));
 
             }else{
                 System.out.print("Invalid User\n");
-                socket.sendMessage(message.getAddress(), message.getPort(), "111");
+                socket.sendMessage(packet.getAddress(), packet.getPort(), "111");
             }
     }
 
@@ -72,4 +76,19 @@ public class Login {
         }
     }
 
+
+    public VerifyUser getCurrentUser(ServerDatagramPacket packet){
+
+        VerifyUser user = new VerifyUser("",false);
+        Iterator<LoggedInUser> it = loggedInUsers.iterator();
+        while (it.hasNext()) {
+            LoggedInUser loggedInuser = it.next();
+            if((loggedInuser.getAddress().equals(packet.getAddress())))  {
+                user.setUserName(loggedInuser.getName());
+                user.setValid(true);
+                break;
+            }
+        }
+        return user;
+    }
 }

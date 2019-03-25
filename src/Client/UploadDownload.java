@@ -6,18 +6,20 @@ import java.io.IOException;
 
 public class UploadDownload extends Component {
 
+    ClientHelper helper;
     public UploadDownload(){
 
     }
 
     public void uploadFileToServer(String hostname, String port) throws IOException {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.showOpenDialog(this);
+        //JFileChooser fileChooser = new JFileChooser();
+        //fileChooser.showOpenDialog(this);
 
-        String filePathToUpload = fileChooser.getSelectedFile().getAbsolutePath();
+        String filePathToUpload = "/Users/gerardryan/Downloads/users.dat";
         System.out.println(filePathToUpload);
 
-        ClientHelper helper = new ClientHelper(hostname, port);
+
+        this.helper = new ClientHelper(hostname,port);
         String response = helper.sendFileToServer(filePathToUpload);
         try {
             if(response.equals("111")){

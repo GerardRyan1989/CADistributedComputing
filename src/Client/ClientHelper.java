@@ -24,8 +24,7 @@ public class ClientHelper {
         this.mySocket = new ClientDatagramSocket();
     }
 
-    public String getEcho(String message)
-            throws SocketException, IOException {
+    public String getEcho(String message) throws SocketException, IOException {
         String echo = "";
         mySocket.sendMessage(serverHost, serverPort, message);
         // now receive the echo

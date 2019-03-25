@@ -9,6 +9,7 @@ public class LoginLogoutClient {
 
     String username;
     String password;
+    ClientHelper helper;
 
     public LoginLogoutClient() {
     }
@@ -32,21 +33,37 @@ public class LoginLogoutClient {
 
 
     public void login(String hostName, String portNum){
-        InputStreamReader is = new InputStreamReader(System.in);
-        BufferedReader br = new BufferedReader(is);
 
-        this.username = JOptionPane.showInputDialog(("please enter name "));
-        this.password = JOptionPane.showInputDialog(("please enter password "));
+        boolean validUsername = false;
+        boolean validPassword = false;
+
+
+       // while(!validUsername){
+       //     this.username = JOptionPane.showInputDialog(("please enter name "));
+       //     if(username.startsWith("!") && username.endsWith("@") && username.length() > 5){
+       //         validUsername = true;
+       //     }
+       // }
+       //
+       // while(!validPassword){
+       //     this.password = JOptionPane.showInputDialog(("please enter password "));
+
+       //     this.password = JOptionPane.showInputDialog(("please enter password"));
+       //     if(password.startsWith("%") && password.endsWith("&") && password.length() > 5){
+       //         validPassword = true;
+       //     }
+       // }
+
+        this.username = "!Gerard@";
+        this.password = "%password&";
 
         try{
-            System.out.println("username and password.");
 
-            ClientHelper helper = new ClientHelper(hostName, portNum);
+            this.helper = new ClientHelper(hostName,portNum);
             String message = "101" + " " + username + " " + password;
-            String messageReturned =  helper.getEcho(message);
-
-
+            String messageReturned = helper.getEcho(message);
             System.out.println(messageReturned);
+
         } catch (Exception ex) {
             ex.printStackTrace( );
         } // end catch

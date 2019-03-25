@@ -1,7 +1,5 @@
 package Server;
 
-import java.io.*;
-
 /**
  * This module contains the application logic of an echo server
  * which uses a connectionless datagram socket for interprocess
@@ -17,16 +15,18 @@ public class Server {
             serverPort = Integer.parseInt(args[0]);
 
         try {
+
             ServerDatagramSocket mySocket = new ServerDatagramSocket(serverPort);
             System.out.println("Echo server ready.");
             Login login = new Login();
+            FileManager fileManager = new FileManager();
 
             while (true) {
-                DatagramMessage request = mySocket.receiveMessageAndSender();
-                String message = request.getMessage( );
+                ServerDatagramPacket request = mySocket.receiveMessageAndSender();
 
                 ReadFile readFile = new ReadFile();
-                int protocolNumber = readFile.getProtocolNumber(message);
+                int protocolNumber =  readFile.getProtocolNum(request.getData());
+
                 switch (protocolNumber) {
                     case 101:
                         System.out.println("Login request made.");
@@ -34,14 +34,14 @@ public class Server {
                         break;
                     case 102:
                         System.out.println("File Upload request made.");
-
+                        fileManager.saveFileUploaded(request, mySocket, login);
                         break;
                     case 103:
                         System.out.println("File Download request made.");
                         break;
                     case 104:
                         System.out.println("Logout request made.");
-                        login.logoutRequest(request, mySocket);
+                        //login.logoutRequest(request, mySocket);
                         break;
                     default:
                         System.out.println("Unrecognised request type made.");
