@@ -38,6 +38,7 @@ public class Server {
                         break;
                     case 103:
                         System.out.println("File Download request made.");
+                        fileManager.downloadFileFromServer(request, mySocket, login);
                         break;
                     case 104:
                         System.out.println("Logout request made.");

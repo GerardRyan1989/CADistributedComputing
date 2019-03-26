@@ -45,6 +45,13 @@ public class ServerDatagramSocket extends DatagramSocket {
         this.receive(datagram);
         return datagram;
     }
+
+    public String sendFile(InetAddress receiverHost, int receiverPort, byte[] file) throws IOException {
+        DatagramPacket datagram = new DatagramPacket(file, file.length, receiverHost, receiverPort);
+        this.send(datagram);
+        String receiveMessage = receiveMessage();
+        return receiveMessage;
+    }
 } //end class
 
 

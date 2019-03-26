@@ -42,8 +42,11 @@ public class ClientHelper {
         byte[] data = FilePacket.getBytesFromPath(pathToFile);
         int length = data.length;
         String name = FilePacket.getFileNameFromPath(pathToFile);
-        byte[] bytesForPacket = FilePacket.wrappedPacket("102", length, name, data);
+        byte[] bytesForPacket = FilePacket.wrappedPacket("102,", length , "," + name + "," , data);
 
         return mySocket.sendFile(serverHost, serverPort, bytesForPacket);
     }
+
+
+
 } //end class

@@ -86,7 +86,6 @@ public class Login {
             if((loggedInuser.getAddress().equals(packet.getAddress())))  {
                 user.setUserName(loggedInuser.getName());
                 user.setValid(true);
-                break;
             }
         }
         return user;

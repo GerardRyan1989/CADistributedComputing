@@ -3,6 +3,8 @@ package Client;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 public class UploadDownload extends Component {
 
@@ -15,7 +17,7 @@ public class UploadDownload extends Component {
         //JFileChooser fileChooser = new JFileChooser();
         //fileChooser.showOpenDialog(this);
 
-        String filePathToUpload = "/Users/gerardryan/Downloads/users.dat";
+        String filePathToUpload = "/Users/gerardryan/Downloads/user.txt";
         System.out.println(filePathToUpload);
 
 
@@ -28,8 +30,16 @@ public class UploadDownload extends Component {
         }catch(Exception e) {
             e.printStackTrace();
         }
-
     }
+
+
+    public void downloadFileFromServer(String username, String filename, String hostname , String port ) throws IOException {
+        this.helper = new ClientHelper(hostname,port);
+        String message = "103" + username + filename;
+        String messageReturned = helper.getEcho(message);
+        System.out.println(messageReturned);
+    }
+
 }
 
 

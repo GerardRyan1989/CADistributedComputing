@@ -17,10 +17,10 @@ public class ReadFile {
         return java.nio.ByteBuffer.wrap(size).getInt();
     }
     public String getFileName(byte[] data) {
-        byte[] fileName = new byte[10];
+        byte[] fileName = new byte[9];
         System.arraycopy(data, 7, fileName, 0, fileName.length);
         System.out.println("name of file is: " + new String(fileName));
-        return new String(fileName);
+        return new String(fileName).trim();
     }
     public static byte[] getFileContent(byte[] data) {
         int fileSize = getFileSize(data);
@@ -35,6 +35,12 @@ public class ReadFile {
         String userName = array.substring(array.lastIndexOf('!') + 1, array.indexOf('@'));
         return userName;
 
+    }
+
+    public String getFileNameAString(byte[] data){
+        String array = new String(data);
+        String filename = array.substring(array.lastIndexOf('$') + 1, array.indexOf('^'));
+        return filename;
     }
 
     public String getPassword(byte[] data){
