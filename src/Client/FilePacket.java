@@ -8,16 +8,17 @@ import java.nio.file.Paths;
 
 public class FilePacket{
 
-    public static byte[] wrappedPacket(String protocol, int fileSize, String fileName, byte[] file) {
+    public static byte[] wrappedPacket(String protocol, String userName, String fileName, byte[] file) {
         byte[] protocolBytes = getBytesFromString(protocol);
-        byte[] fileSizeBytes = getBytesFromInt(fileSize);
+        byte[] userNameBytes = getBytesFromUSername(userName);
         byte[] fileNameBytes = getBytesFromString(fileName);
         byte[] fileContentBytes = file;
 
-        byte[] protocolAndFileSize = concatByteArrays(protocolBytes,fileSizeBytes);
+
+        byte[] protocolAndUsername = concatByteArrays(protocolBytes, userNameBytes);
         byte[] fileNameAndContent = concatByteArrays(fileNameBytes, fileContentBytes);
 
-        return concatByteArrays(protocolAndFileSize, fileNameAndContent);
+        return concatByteArrays(protocolAndUsername, fileNameAndContent);
     }
 
     public static byte[] getBytesFromString(String string) {
@@ -46,4 +47,10 @@ public class FilePacket{
         String name = path.getFileName().toString();
         return name;
     }
+
+    public static byte[] getBytesFromUSername(String username) {
+        byte[] nameInBytes = username.getBytes();
+        return nameInBytes;
+    }
+
 }

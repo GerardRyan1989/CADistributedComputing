@@ -54,10 +54,11 @@ public class Client {
 
                     loginLogout.login(hostName,portNum);
 
-                    uploadDownload.uploadFileToServer(hostName,portNum);
+                    //uploadDownload.uploadFileToServer(hostName,portNum);
 
-                    uploadDownload.downloadFileFromServer("!Gerard@", "$user.txt^", hostName, portNum);
+                    //uploadDownload.downloadFileFromServer("Gerard", "user.txt", hostName, portNum);
 
+                    loginLogout.logout(hostName,portNum);
 
 
 

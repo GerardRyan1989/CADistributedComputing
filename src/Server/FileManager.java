@@ -16,46 +16,45 @@ public class FileManager {
 
     }
 
-    public void saveFileUploaded(ServerDatagramPacket packet, ServerDatagramSocket socket, Login login) throws IOException {
+    public void saveFileUploaded(DatagramSplit datagramSplit, ServerDatagramSocket socket, Login login) throws IOException {
         Login loggedIn = login;
-        ReadFile read = new ReadFile();
-        ServerDatagramPacket uploadFile = packet;
-        byte [] data = uploadFile.getData();
-        String uploadedFile = new String(data);
-        List<String> list = Arrays.asList(uploadedFile.split(","));
-        VerifyUser user = loggedIn.getCurrentUser(packet);
-        String nameOfFile = list.get(2);
-        byte [] file = list.get(3).getBytes();
+        VerifyUser user = loggedIn.getCurrentUser(datagramSplit);
+        String nameOfFile = datagramSplit.getFileName();
+        byte [] file = datagramSplit.getData();
 
         if(user.isValid() == true){
             new File(user.getUserName()).mkdir();
             Path path = Paths.get(user.getUserName().trim() + "/" + nameOfFile.trim());
             Files.write(path,file);
-            socket.sendMessage(packet.getAddress(), packet.getPort(), "501");
+            socket.sendMessage(datagramSplit.getAddress(), datagramSplit.getPortNo(), "501");
         }else{
-            socket.sendMessage(packet.getAddress(), packet.getPort(), "502");
+            socket.sendMessage(datagramSplit.getAddress(), datagramSplit.getPortNo(), "502");
         }
     }
 
 
-    public void downloadFileFromServer(ServerDatagramPacket packet, ServerDatagramSocket socket, Login login) throws IOException {
+    public void downloadFileFromServer(DatagramSplit data, ServerDatagramSocket socket, Login login) throws IOException {
         Login loggedIn = login;
-        ReadFile readFile = new ReadFile();
-        String username = readFile.getUserName(packet.getData());
-        String nameOfFile =  readFile.getFileNameAString(packet.getData());
+        String username = data.getName();
+        String nameOfFile =  data.getFileName();
+        VerifyUser user = loggedIn.getCurrentUser(data);
+        String protocolNum = "504";
 
-        Path path = Paths.get(  username.trim() + "/" + nameOfFile.trim());
-        nameOfFile = "," + nameOfFile + ",";
-        byte[] fileDownload =  Files.readAllBytes(path);
-        byte[] fileName = nameOfFile.getBytes();
-        byte[] file = new byte[fileName.length + fileDownload.length];
-        System.arraycopy(fileName, 0, file, 0, fileName.length);
-        System.arraycopy(fileDownload, 0, file, fileName.length, fileDownload.length);
+        if(user.isValid() == true){
+            Path path = Paths.get(  username.trim() + "/" + nameOfFile.trim());
+            nameOfFile = "," + nameOfFile + ",";
+            byte[] fileDownload =  Files.readAllBytes(path);
+            byte[] fileName = nameOfFile.getBytes();
+            byte[] protocol = protocolNum.getBytes();
+            byte[] file = new byte[fileName.length + fileDownload.length + 3];
 
-        System.out.println("hello");
-        socket.sendFile(packet.getAddress(), packet.getPort(), file);
+            System.arraycopy(protocol, 0, file, 0, protocol.length);
+            System.arraycopy(fileName, 0, file, protocol.length, fileName.length);
+            System.arraycopy(fileDownload, 0, file, protocol.length + fileName.length, fileDownload.length);
+
+             socket.sendFile(data.getAddress(), data.getPortNo(), file);
+        }else{
+            socket.sendMessage(data.getAddress(), data.getPortNo(), "503");
+        }
     }
-
-
-
 }

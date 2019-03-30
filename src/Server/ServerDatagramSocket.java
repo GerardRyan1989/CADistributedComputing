@@ -28,13 +28,13 @@ public class ServerDatagramSocket extends DatagramSocket {
         return message;
     } //end receiveMessage
 
-    public ServerDatagramPacket receiveMessageAndSender( ) throws IOException {
+    public DatagramSplit receiveMessageAndSender( ) throws IOException {
         byte[ ] receiveBuffer = new byte[MAX_LEN];
         DatagramPacket datagram = new DatagramPacket(receiveBuffer, MAX_LEN);
         this.receive(datagram);
         // create a DatagramMessage object, to contain message
         // received and sender's address
-        ServerDatagramPacket packet = new ServerDatagramPacket(datagram.getAddress(), datagram.getPort(), datagram.getData()) ;
+        DatagramSplit packet = new DatagramSplit(datagram) ;
         return packet;
     } //end receiveMessage
 

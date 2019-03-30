@@ -54,13 +54,13 @@ public class LoginLogoutClient {
        //     }
        // }
 
-        this.username = "!Gerard@";
-        this.password = "%password&";
+        this.username = "Gerard";
+        this.password = "password";
 
         try{
 
             this.helper = new ClientHelper(hostName,portNum);
-            String message = "101" + " " + username + " " + password;
+            String message = "101" + "," + username + "," + password + ",";
             String messageReturned = helper.getEcho(message);
             System.out.println(messageReturned);
 
@@ -70,13 +70,14 @@ public class LoginLogoutClient {
     }
 
     public void logout(String hostName, String portNum) throws IOException {
-        int result = JOptionPane.showConfirmDialog(null,"Do you wang to log out ?", "",JOptionPane.YES_NO_OPTION);
-        this.username = JOptionPane.showInputDialog(("please enter name "));
-        this.password = JOptionPane.showInputDialog(("please enter password "));
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to log out ?", "",JOptionPane.YES_NO_OPTION);
+
+        this.username = "Gerard";
+        this.password = "password";
 
         if(result == JOptionPane.YES_OPTION){
             ClientHelper helper = new ClientHelper(hostName, portNum);
-            String message = "104" + " " + username + " " + password;
+            String message = "104" + "," + username + "," + password + ",";
             String messageReturned =  helper.getEcho(message);
             System.out.println((messageReturned));
         }

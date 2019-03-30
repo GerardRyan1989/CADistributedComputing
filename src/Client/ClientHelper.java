@@ -37,13 +37,11 @@ public class ClientHelper {
     }  //end done
 
 
-    public String sendFileToServer(String pathToFile) throws IOException {
+    public String sendFileToServer(String username, String pathToFile) throws IOException {
 
         byte[] data = FilePacket.getBytesFromPath(pathToFile);
-        int length = data.length;
         String name = FilePacket.getFileNameFromPath(pathToFile);
-        byte[] bytesForPacket = FilePacket.wrappedPacket("102,", length , "," + name + "," , data);
-
+        byte[] bytesForPacket = FilePacket.wrappedPacket("102,", username + ",",   name + "," , data);
         return mySocket.sendFile(serverHost, serverPort, bytesForPacket);
     }
 

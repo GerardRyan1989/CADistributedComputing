@@ -1,5 +1,7 @@
 package Server;
 
+import java.net.DatagramPacket;
+
 /**
  * This module contains the application logic of an echo server
  * which uses a connectionless datagram socket for interprocess
@@ -22,27 +24,28 @@ public class Server {
             FileManager fileManager = new FileManager();
 
             while (true) {
-                ServerDatagramPacket request = mySocket.receiveMessageAndSender();
+                DatagramSplit clientData = mySocket.receiveMessageAndSender();
 
-                ReadFile readFile = new ReadFile();
-                int protocolNumber =  readFile.getProtocolNum(request.getData());
 
-                switch (protocolNumber) {
+                //ReadFile readFile = new ReadFile();
+                //int protocolNumber =  readFile.getProtocolNum(request.getData());
+
+                switch (clientData.protocolNumber) {
                     case 101:
                         System.out.println("Login request made.");
-                        login.loginRequest(request, mySocket);
+                        login.loginRequest(clientData, mySocket);
                         break;
                     case 102:
                         System.out.println("File Upload request made.");
-                        fileManager.saveFileUploaded(request, mySocket, login);
+                        fileManager.saveFileUploaded(clientData, mySocket, login);
                         break;
                     case 103:
                         System.out.println("File Download request made.");
-                        fileManager.downloadFileFromServer(request, mySocket, login);
+                        fileManager.downloadFileFromServer(clientData, mySocket, login);
                         break;
                     case 104:
                         System.out.println("Logout request made.");
-                        //login.logoutRequest(request, mySocket);
+                        login.logoutRequest(clientData, mySocket);
                         break;
                     default:
                         System.out.println("Unrecognised request type made.");

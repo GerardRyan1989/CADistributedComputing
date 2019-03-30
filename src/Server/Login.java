@@ -1,5 +1,6 @@
 package Server;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -20,23 +21,21 @@ public class Login {
         validUsers.add(new UserLoginDetails("Jimmy","password3"));
     }
 
-    protected void loginRequest(ServerDatagramPacket packet, ServerDatagramSocket socket) throws IOException {
+    protected void loginRequest(DatagramSplit data, ServerDatagramSocket socket) throws IOException {
             String username;
             String password;
 
-
-            ReadFile readFile = new ReadFile();
-            username = readFile.getUserName(packet.getData());
-            password = readFile.getPassword(packet.getData());
+            username = data.getName();
+            password = data.getPassword();
 
             if(isUserValid(username, password)){
                 System.out.print("Valid User\n");
-                socket.sendMessage(packet.getAddress(), packet.getPort(), "110");
-                loggedInUsers.add(new LoggedInUser(username,password, packet.getAddress(), packet.getPort()));
+                socket.sendMessage(data.getAddress(), data.getPortNo(), "110");
+                loggedInUsers.add(new LoggedInUser(username,password, data.getAddress(), data.getPortNo()));
 
             }else{
                 System.out.print("Invalid User\n");
-                socket.sendMessage(packet.getAddress(), packet.getPort(), "111");
+                socket.sendMessage(data.getAddress(), data.getPortNo(), "111");
             }
     }
 
@@ -49,13 +48,10 @@ public class Login {
         return false;
     }
 
-    public void logoutRequest(DatagramMessage message, ServerDatagramSocket socket) throws IOException {
-        String username;
-        String password;
-        String thisMessage = message.getMessage();
-        String[] words = thisMessage.split(" ");
-        username = words[1];
-        password = words[2];
+    public void logoutRequest(DatagramSplit data, ServerDatagramSocket socket) throws IOException {
+        String username = data.getName();
+        String password = data.getPassword();
+
         boolean removed = false;
 
         Iterator<LoggedInUser> it = loggedInUsers.iterator();
@@ -64,28 +60,31 @@ public class Login {
             if(user.getName().equals(username) && user.getPassword().equals(password)) {
                 it.remove();
                 System.out.println("Logged out");
-                socket.sendMessage(message.getAddress(), message.getPort(), "112");
                 removed = true;
+                break;
             }
         }
 
         if(removed == true){
             System.out.println("Logout Successful");
+            socket.sendMessage(data.getAddress(), data.getPortNo(), "113");
         }else{
             System.out.println("Logout Unsuccessful");
+            socket.sendMessage(data.getAddress(), data.getPortNo(), "114");
         }
     }
 
 
-    public VerifyUser getCurrentUser(ServerDatagramPacket packet){
+    public VerifyUser getCurrentUser(DatagramSplit data){
 
         VerifyUser user = new VerifyUser("",false);
         Iterator<LoggedInUser> it = loggedInUsers.iterator();
         while (it.hasNext()) {
             LoggedInUser loggedInuser = it.next();
-            if((loggedInuser.getAddress().equals(packet.getAddress())))  {
+            if((loggedInuser.getAddress().equals(data.getAddress()) && loggedInuser.getName().equals(data.getName()))){
                 user.setUserName(loggedInuser.getName());
                 user.setValid(true);
+                break;
             }
         }
         return user;
