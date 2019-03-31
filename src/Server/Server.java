@@ -1,7 +1,4 @@
 package Server;
-
-import java.net.DatagramPacket;
-
 /**
  * This module contains the application logic of an echo server
  * which uses a connectionless datagram socket for interprocess
@@ -17,7 +14,6 @@ public class Server {
             serverPort = Integer.parseInt(args[0]);
 
         try {
-
             ServerDatagramSocket mySocket = new ServerDatagramSocket(serverPort);
             System.out.println("Echo server ready.");
             Login login = new Login();
@@ -26,29 +22,28 @@ public class Server {
             while (true) {
                 DatagramSplit clientData = mySocket.receiveMessageAndSender();
 
-
-                //ReadFile readFile = new ReadFile();
-                //int protocolNumber =  readFile.getProtocolNum(request.getData());
-
                 switch (clientData.protocolNumber) {
                     case 101:
-                        System.out.println("Login request made.");
+                        System.out.println("Login request.");
                         login.loginRequest(clientData, mySocket);
                         break;
                     case 102:
-                        System.out.println("File Upload request made.");
+                        System.out.println("File Upload request.");
                         fileManager.saveFileUploaded(clientData, mySocket, login);
                         break;
                     case 103:
-                        System.out.println("File Download request made.");
+                        System.out.println("File Download request.");
                         fileManager.downloadFileFromServer(clientData, mySocket, login);
                         break;
                     case 104:
-                        System.out.println("Logout request made.");
+                        System.out.println("Login Request");
                         login.logoutRequest(clientData, mySocket);
                         break;
+                    case 105:
+                        System.out.println("Get All Files Request.");
+                        fileManager.getAllFilesFromFolder(clientData, mySocket);
                     default:
-                        System.out.println("Unrecognised request type made.");
+                        System.out.println("Unknown Request.");
                 }
             } //end while
         } // end try

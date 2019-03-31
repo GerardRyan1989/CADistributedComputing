@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,6 +33,24 @@ public class FileManager {
         }
     }
 
+
+    public void getAllFilesFromFolder(DatagramSplit data, ServerDatagramSocket socket) throws IOException {
+        File folder = new File(data.getName().trim());
+        File[] listOfFiles = folder.listFiles();
+        String protocolNum = "505";
+        String filesAsString =  protocolNum + ",";
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                filesAsString += listOfFiles[i].getName() + ',';
+            }
+        }
+
+        System.out.println(filesAsString);
+        byte [] filesBytes = filesAsString.getBytes();
+        System.out.println(filesBytes.length);
+        socket.sendFile(data.getAddress(), data.getPortNo(), filesBytes);
+    }
 
     public void downloadFileFromServer(DatagramSplit data, ServerDatagramSocket socket, Login login) throws IOException {
         Login loggedIn = login;

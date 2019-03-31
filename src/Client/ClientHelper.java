@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * This class is a module which provides the application logic
@@ -38,9 +41,9 @@ public class ClientHelper {
 
 
     public String sendFileToServer(String username, String pathToFile) throws IOException {
-
-        byte[] data = FilePacket.getBytesFromPath(pathToFile);
-        String name = FilePacket.getFileNameFromPath(pathToFile);
+        Path path = Paths.get(pathToFile);
+        byte[] data = Files.readAllBytes(path);
+        String name = path.getFileName().toString();
         byte[] bytesForPacket = FilePacket.wrappedPacket("102,", username + ",",   name + "," , data);
         return mySocket.sendFile(serverHost, serverPort, bytesForPacket);
     }

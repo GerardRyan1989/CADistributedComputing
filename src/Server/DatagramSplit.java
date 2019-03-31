@@ -17,19 +17,26 @@ public class DatagramSplit {
 
 
     public DatagramSplit(DatagramPacket packet){
+
         setProtocolNumber(packet.getData());
         setAddress(packet.getAddress());
         setPortNo(packet.getPort());
-        String data = new String(packet.getData());
+
+
         if(this.protocolNumber == 101 || this.protocolNumber == 104){
             setNameWithPassword(packet.getData());
             setPassword(packet.getData());
-        }else{
+        }else if(this.protocolNumber == 105){
+            setName(packet.getData());
+        }else if(this.protocolNumber == 103){
+            setName(packet.getData());
+            setFileName(packet.getData());
+        }
+        else{
             setName(packet.getData());
             setData(packet.getData());
             setFileName(packet.getData());
         }
-
     }
 
     public String getName(){
@@ -37,14 +44,12 @@ public class DatagramSplit {
     }
 
     public void setName(byte [] data){
-        String uploadedFile = new String(data);
-        List<String> list = Arrays.asList(uploadedFile.split(","));
+        List<String> list = splitDataGramIntoList(data);
         this.name = list.get(1);
     }
 
     public void setNameWithPassword(byte [] data){
-        String uploadedFile = new String(data);
-        List<String> list = Arrays.asList(uploadedFile.split(","));
+        List<String> list = splitDataGramIntoList(data);
         this.name = list.get(1);
     }
 
@@ -53,8 +58,7 @@ public class DatagramSplit {
     }
 
     public void setPassword(byte[] data) {
-        String uploadedFile = new String(data);
-        List<String> list = Arrays.asList(uploadedFile.split(","));
+        List<String> list = splitDataGramIntoList(data);
         this.password = list.get(2);
     }
 
@@ -63,8 +67,7 @@ public class DatagramSplit {
     }
 
     public void setProtocolNumber(byte[] data) {
-        String uploadedFile = new String(data);
-        List<String> list = Arrays.asList(uploadedFile.split(","));
+        List<String> list = splitDataGramIntoList(data);
         this.protocolNumber = Integer.parseInt(list.get(0));
     }
 
@@ -73,8 +76,7 @@ public class DatagramSplit {
     }
 
     public void setData(byte[] data) {
-        String uploadedFile = new String(data);
-        List<String> list = Arrays.asList(uploadedFile.split(","));
+        List<String> list = splitDataGramIntoList(data);
         this.data = list.get(3).getBytes();
     }
 
@@ -101,10 +103,14 @@ public class DatagramSplit {
     }
 
     public void setFileName(byte[] data) {
+        List<String> list = splitDataGramIntoList(data);
+        this.fileName = list.get(2);
+    }
+
+    public List<String> splitDataGramIntoList(byte [] data ) {
         String uploadedFile = new String(data);
         List<String> list = Arrays.asList(uploadedFile.split(","));
-        this.fileName = list.get(2);
-
+        return list;
     }
 
 

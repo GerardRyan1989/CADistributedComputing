@@ -14,7 +14,6 @@ public class Login {
     protected ArrayList<LoggedInUser> loggedInUsers = new ArrayList<LoggedInUser>();;
 
     Login(){
-
         validUsers.add(new UserLoginDetails("Gerard","password"));
         validUsers.add(new UserLoginDetails("Darren","password1"));
         validUsers.add(new UserLoginDetails("Jonathan","password2"));

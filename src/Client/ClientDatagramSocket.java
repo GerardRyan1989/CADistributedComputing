@@ -9,13 +9,11 @@ import java.io.*;
  * @author M. L. Liu
  */
 public class ClientDatagramSocket extends DatagramSocket {
-    static final int MAX_LEN = 10;
+    static final int MAX_LEN = 100;
     ClientDatagramSocket( ) throws SocketException{
         super( );
     }
-    ClientDatagramSocket(int portNo) throws SocketException{
-        super(portNo);
-    }
+
     public void sendMessage(InetAddress receiverHost, int receiverPort, String message) throws IOException {
         byte[ ] sendBuffer = message.getBytes( );
         DatagramPacket datagram = new DatagramPacket(sendBuffer, sendBuffer.length, receiverHost, receiverPort);

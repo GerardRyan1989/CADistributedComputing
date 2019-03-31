@@ -1,90 +1,81 @@
 package Client;
-
-import com.sun.codemodel.internal.JOp;
-
 import javax.swing.*;
-import java.io.*;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * This module contains the presentaton logic of an Echo Client.
  * @author M. L. Liu
  */
-public class Client {
-    static final String endMessage = ".";
+public class Client extends JFrame implements ActionListener {
+    private LoginLogoutClient loginLogout = new LoginLogoutClient();
+    private UploadDownload uploadDownload = new UploadDownload();
 
-    public static void main(String[] args) {
-        try {
-            InputStreamReader is = new InputStreamReader(System.in);
-            BufferedReader br = new BufferedReader(is);
-            System.out.println("Welcome to the Echo client.\nWhat is the name of the server host?");
-            String hostName = br.readLine();
+    private JButton btnLogin;
+    private JButton btnLogout;
+    private JButton btnDownload;
+    private JButton btnUpload;
 
+    private Client(){
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(500,500);
+        setLayout(new GridLayout(2,2));
 
-            LoginLogoutClient loginLogout = new LoginLogoutClient();
-            UploadDownload uploadDownload = new UploadDownload();
+        btnUpload = new JButton("Upload File");
+        btnDownload = new JButton("Download File");
+        btnLogin = new JButton("Login");
+        btnLogout  = new JButton("Logout");
 
-            if (hostName.length() == 0) // if user did not enter a name
-                hostName = "localhost";  //   use the default host name
+        btnLogin.addActionListener(this);
+        btnLogout.addActionListener(this);
+        btnUpload.addActionListener(this);
+        btnDownload.addActionListener(this);
 
-            System.out.println("What is the port number of the server host?");
-            String portNum = br.readLine();
-
-            if (portNum.length() == 0)
-                portNum = "7";// default port number
-
-            ClientHelper helper = new ClientHelper(hostName, portNum);
-            boolean done = false;
-            String message, echo;
-
-            while (!done) {
-                System.out.println("Enter a line to receive an echo back from the server, or a single peroid to quit.");
-                message = br.readLine( );
-
-                if ((message.trim()).equals (endMessage)){
-                    done = true;
-                    helper.done( );
-                }
-                else {
-                    echo = helper.getEcho(message);
-                    System.out.println(echo);
-                }
-            }
-
-                    loginLogout.login(hostName,portNum);
-
-                    //uploadDownload.uploadFileToServer(hostName,portNum);
-
-                    //uploadDownload.downloadFileFromServer("Gerard", "user.txt", hostName, portNum);
-
-                    loginLogout.logout(hostName,portNum);
-
-
-
-
-            // end while
-        } // end try
-        catch (Exception ex) {
-            ex.printStackTrace( );
-        } // end catch
-
-
-
-
-
-        // end catch
+        this.add(btnLogin);
+        this.add(btnLogout);
+        this.add(btnUpload);
+        this.add(btnDownload);
+        this.setVisible(true);
+    }
+    public static void main(String[] args){
+        new Client();
     } //end main
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String hostName = "localhost";
+        String portNum = "7";
 
+        if(e.getSource() == btnLogin){
+            loginLogout.login(hostName, portNum);
+        }
 
+        if(e.getSource() == btnUpload){
 
-    public void download(){
+           try {
+              uploadDownload.uploadFileToServer(hostName, portNum,loginLogout.getUsername());
+           } catch (IOException e1) {
+                e1.printStackTrace();
+           }
+        }
+
+        if(e.getSource() == btnDownload){
+            try {
+                uploadDownload.downloadFileFromServer(hostName, portNum, loginLogout.getUsername());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+        if(e.getSource() == btnLogout){
+            try {
+                loginLogout.logout(hostName, portNum);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
 
     }
-    public void upload() {
-
-    }
-
-
 } // end class
