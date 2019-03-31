@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,18 +51,28 @@ public class UploadDownload extends Component {
 
 
     public void downloadFileFromServer(String hostname , String port, String userName) throws IOException {
+
         this.helper = new ClientHelper(hostname,port);
-        String filename = JOptionPane.showInputDialog(null, "please enter the name of ile you want to download");
+        String filename = JOptionPane.showInputDialog(null, "Please enter the name of file you want to download");
         String username =  userName;
 
         String message = "103" + "," + username + "," + filename + ",";
         String messageReturned = helper.getEcho(message);
-        System.out.println(messageReturned);
-
-        JFileChooser FC= new JFileChooser("C:/");
-        int retrival = FC.showSaveDialog(null);
+        DatagramSplit file = new DatagramSplit(messageReturned);
 
 
+
+
+
+        String directory = "Client/" + username.trim() + "/";
+        new File(directory).mkdir();
+        Path path = Paths.get( directory  + file.getFileName());
+        Path parentDir = Paths.get( directory);;
+
+        if (!Files.exists(parentDir))
+            Files.createDirectories(parentDir);
+
+        Files.write(path, file.getData());
 
     }
 

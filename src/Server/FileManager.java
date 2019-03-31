@@ -25,14 +25,19 @@ public class FileManager {
 
         if(user.isValid() == true){
             new File(user.getUserName()).mkdir();
-            Path path = Paths.get(user.getUserName().trim() + "/" + nameOfFile.trim());
+            String directory = "Server/" + user.getUserName().trim();
+            Path path = Paths.get(directory + "/" + nameOfFile.trim());
+            Path parentDir = Paths.get(directory);;
+
+            if (!Files.exists(parentDir))
+                Files.createDirectories(parentDir);
+
             Files.write(path,file);
             socket.sendMessage(datagramSplit.getAddress(), datagramSplit.getPortNo(), "501");
         }else{
             socket.sendMessage(datagramSplit.getAddress(), datagramSplit.getPortNo(), "502");
         }
     }
-
 
     public void getAllFilesFromFolder(DatagramSplit data, ServerDatagramSocket socket) throws IOException {
         File folder = new File(data.getName().trim());
