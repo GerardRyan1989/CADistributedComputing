@@ -5,13 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class FileManager {
-
 
     public FileManager(){
 
@@ -23,7 +19,7 @@ public class FileManager {
         String nameOfFile = datagramSplit.getFileName();
         byte [] file = datagramSplit.getData();
 
-        if(user.isValid() == true){
+        if(user.isValid()){
             new File(user.getUserName()).mkdir();
             String directory = "Server/" + user.getUserName().trim();
             Path path = Paths.get(directory + "/" + nameOfFile.trim());
@@ -51,9 +47,7 @@ public class FileManager {
             }
         }
 
-        System.out.println(filesAsString);
         byte [] filesBytes = filesAsString.getBytes();
-        System.out.println(filesBytes.length);
         socket.sendFile(data.getAddress(), data.getPortNo(), filesBytes);
     }
 
@@ -64,7 +58,7 @@ public class FileManager {
         VerifyUser user = loggedIn.getCurrentUser(data);
         String protocolNum = "504";
 
-        if(user.isValid() == true){
+        if(user.isValid()){
             Path path = Paths.get(  username.trim() + "/" + nameOfFile.trim());
             nameOfFile = "," + nameOfFile + ",";
             byte[] fileDownload =  Files.readAllBytes(path);

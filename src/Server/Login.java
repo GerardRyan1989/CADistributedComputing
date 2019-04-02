@@ -1,17 +1,13 @@
 package Server;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-@SuppressWarnings("Duplicates")
-public class Login {
+class Login {
 
     private ArrayList<UserLoginDetails> validUsers = new ArrayList<UserLoginDetails>();
-    protected ArrayList<LoggedInUser> loggedInUsers = new ArrayList<LoggedInUser>();;
+    private ArrayList<LoggedInUser> loggedInUsers = new ArrayList<LoggedInUser>();
 
     Login(){
         validUsers.add(new UserLoginDetails("Gerard","password"));

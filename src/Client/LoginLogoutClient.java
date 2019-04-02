@@ -1,10 +1,7 @@
 package Client;
 
 import javax.swing.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-
 public class LoginLogoutClient {
 
     String username;
@@ -14,23 +11,32 @@ public class LoginLogoutClient {
     public LoginLogoutClient() {
     }
 
-
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void logout(String hostName, String portNum) throws IOException {
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to log out ?",
+                "",JOptionPane.YES_NO_OPTION);
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        if(result == JOptionPane.YES_OPTION){
+            ClientHelper helper = new ClientHelper(hostName, portNum);
+            String message = "104" + "," + this.username + "," + this.password + ",";
+            String messageReturned =  helper.getEcho(message);
 
+            if(messageReturned.equals("113")){
+                JOptionPane.showMessageDialog(null,"You have logged out Successfully",
+                        "Successful Logout", JOptionPane.INFORMATION_MESSAGE);
+                this.username = "";
+                this.password = "";
+            }
+            else if(messageReturned.equals("114")){
+                JOptionPane.showMessageDialog(null,"Logout Unsuccessful",
+                        "Unsuccessful Logout", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
 
     public void login(String hostName, String portNum){
 
@@ -43,8 +49,8 @@ public class LoginLogoutClient {
                 validUsername = true;
             }
             else{
-                JOptionPane.showMessageDialog(null,"Invalid username please ensure username is lees than 15 characters long\n " +
-                        "and dosent conation the \", \" character ","Invalid username", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Invalid username please ensure username is lees " +
+                        "than 15 characters long\n and dosent conation the \", \" character ","Invalid username", JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -67,10 +73,12 @@ public class LoginLogoutClient {
             System.out.println(messageReturned);
 
             if(messageReturned.equals("110")){
-                JOptionPane.showMessageDialog(null,"You have logged in Successfully","Successful Login", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null,"You have logged in Successfully",
+                        "Successful Login", JOptionPane.INFORMATION_MESSAGE);
             }
             else if(messageReturned.equals("111")){
-                JOptionPane.showMessageDialog(null,"Login Unsuccessful","Unsuccessful Login", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Login Unsuccessful",
+                        "Unsuccessful Login", JOptionPane.ERROR_MESSAGE);
             }
 
 
@@ -78,28 +86,5 @@ public class LoginLogoutClient {
             ex.printStackTrace( );
         } // end catch
     }
-
-    public void logout(String hostName, String portNum) throws IOException {
-        int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to log out ?", "",JOptionPane.YES_NO_OPTION);
-
-
-
-        if(result == JOptionPane.YES_OPTION){
-            ClientHelper helper = new ClientHelper(hostName, portNum);
-            String message = "104" + "," + this.username + "," + this.password + ",";
-            String messageReturned =  helper.getEcho(message);
-
-            if(messageReturned.equals("113")){
-                JOptionPane.showMessageDialog(null,"You have logged out Successfully","Successful Logout", JOptionPane.INFORMATION_MESSAGE);
-                this.username = "";
-                this.password = "";
-            }
-            else if(messageReturned.equals("114")){
-                JOptionPane.showMessageDialog(null,"Logout Unsuccessful","Unsuccessful Logout", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-
 
 }

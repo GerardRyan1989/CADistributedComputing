@@ -24,27 +24,35 @@ public class UploadDownload extends Component {
 
     }
 
+
     public void uploadFileToServer(String hostname, String port, String userName) throws IOException {
+        //JFileChooser to allow user to specify which file they want to upload
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(this);
         String filePathToUpload =  fileChooser.getSelectedFile().getAbsolutePath();
 
+
         String username = userName;
 
-        try {
-            this.helper = new ClientHelper(hostname,port);
-            String response = helper.sendFileToServer(username, filePathToUpload);
+        if(filePathToUpload.getBytes().length > 64) {
+            JOptionPane.showMessageDialog(null,"File size too big please choose a file 64Kb or smaller" ,"File size Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            try {
+                this.helper = new ClientHelper(hostname,port);
+                String response = helper.sendFileToServer(username, filePathToUpload);
 
-            if(response.equals("501")){
-                JOptionPane.showMessageDialog(null,"File upload Successful","Successful Upload", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else if(response.equals("502")){
-                JOptionPane.showMessageDialog(null,"File upload Unsuccessful","Unsuccessful Upload", JOptionPane.ERROR_MESSAGE);
-            }
+                if(response.equals("501")){
+                    JOptionPane.showMessageDialog(null,"File upload Successful","Successful Upload", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(response.equals("502")){
+                    JOptionPane.showMessageDialog(null,"File upload Unsuccessful","Unsuccessful Upload", JOptionPane.ERROR_MESSAGE);
+                }
 
-        }catch(Exception e) {
-            e.printStackTrace();
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
 
@@ -59,10 +67,6 @@ public class UploadDownload extends Component {
         String message = "103" + "," + username + "," + filename + ",";
         String messageReturned = helper.getEcho(message);
         DatagramSplit file = new DatagramSplit(messageReturned);
-
-
-
-
 
         String directory = "Client/" + username.trim() + "/";
         new File(directory).mkdir();

@@ -3,6 +3,7 @@ package Server;
 public class VerifyUser {
 
     protected boolean valid;
+    protected String userName;
 
     public VerifyUser(){
 
@@ -28,7 +29,4 @@ public class VerifyUser {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
-
-    protected String userName;
-
 }

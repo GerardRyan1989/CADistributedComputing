@@ -36,7 +36,7 @@ public class Server {
                         fileManager.downloadFileFromServer(clientData, mySocket, login);
                         break;
                     case 104:
-                        System.out.println("Login Request");
+                        System.out.println("Logout Request");
                         login.logoutRequest(clientData, mySocket);
                         break;
                     case 105:

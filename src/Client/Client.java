@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 /**
  * This module contains the presentaton logic of an Echo Client.
  * @author M. L. Liu
@@ -39,6 +38,7 @@ public class Client extends JFrame implements ActionListener {
         this.add(btnDownload);
         this.setVisible(true);
     }
+
     public static void main(String[] args){
         new Client();
     } //end main

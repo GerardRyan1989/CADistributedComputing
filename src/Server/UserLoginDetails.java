@@ -2,7 +2,6 @@ package Server;
 
 public class UserLoginDetails {
 
-
     private String userName;
     private String passWord;
 
@@ -18,7 +17,6 @@ public class UserLoginDetails {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
     public String getPassWord() {
         return passWord;
     }

@@ -1,5 +1,4 @@
 package Server;
-
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.util.Arrays;
@@ -15,9 +14,7 @@ public class DatagramSplit {
     byte [] data;
     String fileName;
 
-
     public DatagramSplit(DatagramPacket packet){
-
         setProtocolNumber(packet.getData());
         setAddress(packet.getAddress());
         setPortNo(packet.getPort());
@@ -60,10 +57,6 @@ public class DatagramSplit {
     public void setPassword(byte[] data) {
         List<String> list = splitDataGramIntoList(data);
         this.password = list.get(2);
-    }
-
-    public int getProtocolNumber() {
-        return protocolNumber;
     }
 
     public void setProtocolNumber(byte[] data) {
@@ -112,6 +105,4 @@ public class DatagramSplit {
         List<String> list = Arrays.asList(uploadedFile.split(","));
         return list;
     }
-
-
 }
