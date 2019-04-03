@@ -13,8 +13,15 @@ public class DatagramSplit {
     public DatagramSplit(String download){
         List<String> list = new ArrayList<String>(Arrays.asList(download.split(",")));
         this.protocolNumber = Integer.parseInt(list.get(0));
-        this.fileName = list.get(1);
-        this.data = list.get(2).getBytes();
+
+        if(this.protocolNumber == 506){
+            //do nothing
+        }
+        else{
+            this.fileName = list.get(1);
+            this.data = list.get(2).getBytes();
+        }
+
     }
 
     public int getProtocolNumber() {

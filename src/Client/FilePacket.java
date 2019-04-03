@@ -26,12 +26,12 @@ public class FilePacket{
         return concatenatedByteArrays;
     }
 
-    public static String [] splitDataIntoLIst(byte [] data) {
+    public static ArrayList<String> splitDataIntoList(byte [] data) {
         String downLoadedFile = new String(data);
         ArrayList<String> listAsArray = new ArrayList(Arrays.asList(downLoadedFile.split(",")));
         listAsArray.remove(0);
-        String [] list = listAsArray.toArray(new String[listAsArray.size()]);
-        return list;
+
+        return listAsArray;
     }
 
 

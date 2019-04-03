@@ -29,7 +29,7 @@ public class ClientHelper {
     }
 
     //sends message to server and recieves response from server
-    public String getEcho(String message) throws SocketException, IOException {
+    public String getEcho(String message) throws IOException {
         String echo = "";
         mySocket.sendMessage(serverHost, serverPort, message);
         // now receive the echo
@@ -37,7 +37,7 @@ public class ClientHelper {
         return echo;
     } //end getEcho
 
-    public void done( ) throws SocketException {
+    public void done() throws SocketException {
         mySocket.close();
     }  //end done
 

@@ -55,31 +55,75 @@ public class UploadDownload extends Component {
 
     }
 
+    //public ArrayList<String> getAllFilesFromServer(String hostname , String port, String userName) throws IOException {
+//
+    //    this.helper = new ClientHelper(hostname,port);
+//
+    //    String username =  userName;
+    //    String message = "105" + "," + userName;
+    //    String messageReturned = helper.getEcho(message);
+//
+    //    ArrayList<String> files = FilePacket.splitDataIntoList(messageReturned.getBytes());
+//
+    //    helper.done();
+//
+    //    downloadFileFromServer(hostname, port,username, files);
+    //    return files;
+//
+    //}
+//
+
+   public void downloadFileFromServer(String hostname , String port, String userName) throws IOException {
+       String username = userName;
+       //ArrayList<String> filesAvailableForDownload = new ArrayList<>();
+       //String[] filenames = new String[files.size()];
+       //filesAvailableForDownload.addAll(files);
+
+      //for(int i = 0; i < filesAvailableForDownload.size(); i++){
+      //    filenames[i] = filesAvailableForDownload.get(i);
+      //}
+
+      // if(filesAvailableForDownload.size() > 0){
+      //     String filename  = (String) JOptionPane.showInputDialog(null, "Choose file for download",
+      //             "FileDownload!!", JOptionPane.QUESTION_MESSAGE, null,
+      //             filenames, // Array of choices
+      //             filenames[0]);
 
 
+           String filename = (String) JOptionPane.showInputDialog("please enter the name of the file you wish to download");
+           this.helper = new ClientHelper(hostname,port);
 
-    public void downloadFileFromServer(String hostname , String port, String userName) throws IOException {
+           String message = "103" + "," + username + "," + filename + ",";
+           String messageReturned = helper.getEcho(message);
+           DatagramSplit file = new DatagramSplit(messageReturned);
 
-        this.helper = new ClientHelper(hostname,port);
-        String filename = JOptionPane.showInputDialog(null, "Please enter the name of file you want to download");
-        String username =  userName;
+           if(file.getProtocolNumber() == 504 ){
+               String directory = "Client/" + username.trim() + "/";
+               new File(directory).mkdir();
+               Path path = Paths.get( directory  + file.getFileName());
+               Path parentDir = Paths.get( directory);
+               if (!Files.exists(parentDir))
+                   Files.createDirectories(parentDir);
+               Files.write(path, file.getData());
 
-        String message = "103" + "," + username + "," + filename + ",";
-        String messageReturned = helper.getEcho(message);
-        DatagramSplit file = new DatagramSplit(messageReturned);
+               JOptionPane.showMessageDialog(null,"File Download Successful","Successful Download", JOptionPane.INFORMATION_MESSAGE);
+           }
+           else if(file.getProtocolNumber() == 503){
+               JOptionPane.showMessageDialog(null,"please log in before downloading a file","Unsuccessful Download", JOptionPane.ERROR_MESSAGE);
+           }
+           else if(file.getProtocolNumber() == 506){
+               JOptionPane.showMessageDialog(null,"No such file exists","Unsuccessful Download", JOptionPane.ERROR_MESSAGE);
+           }
+           else {
+               JOptionPane.showMessageDialog(null,"File download Unsuccessful something went wrong","Unsuccessful Download", JOptionPane.ERROR_MESSAGE);
+           }
 
-        String directory = "Client/" + username.trim() + "/";
-        new File(directory).mkdir();
-        Path path = Paths.get( directory  + file.getFileName());
-        Path parentDir = Paths.get( directory);;
 
-        if (!Files.exists(parentDir))
-            Files.createDirectories(parentDir);
-
-        Files.write(path, file.getData());
-
-    }
-
+      //}
+      //else{
+      //    JOptionPane.showMessageDialog(null,"No Files Available for download","Successful Upload", JOptionPane.INFORMATION_MESSAGE);
+      //}
+   }
 }
 
 

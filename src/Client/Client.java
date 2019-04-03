@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * This module contains the presentaton logic of an Echo Client.
  * @author M. L. Liu
@@ -64,6 +66,7 @@ public class Client extends JFrame implements ActionListener {
         if(e.getSource() == btnDownload){
             try {
                 uploadDownload.downloadFileFromServer(hostName, portNum, loginLogout.getUsername());
+
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
