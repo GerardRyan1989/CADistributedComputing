@@ -14,7 +14,7 @@ public class DatagramSplit {
         List<String> list = new ArrayList<String>(Arrays.asList(download.split(",")));
         this.protocolNumber = Integer.parseInt(list.get(0));
 
-        if(this.protocolNumber == 506){
+        if(this.protocolNumber == 506 || this.protocolNumber == 503){
             //do nothing
         }
         else{
