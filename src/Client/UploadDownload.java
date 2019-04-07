@@ -24,7 +24,7 @@ public class UploadDownload extends Component {
 
         String username = userName;
 
-        if(filePathToUpload.getBytes().length > 64) {
+        if(new File(filePathToUpload).length() >  65536) {
             JOptionPane.showMessageDialog(null,"File size too big please choose a file 64Kb or smaller" ,
                     "File size Error", JOptionPane.ERROR_MESSAGE);
         }else{
@@ -51,30 +51,38 @@ public class UploadDownload extends Component {
    public void downloadFileFromServer(String hostname , String port, String userName) throws IOException {
 
         String username = userName;
-        String filename = JOptionPane.showInputDialog("please enter the name of the file you wish to download");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File
+               (System.getProperty("user.home") + System.getProperty("file.separator")+ "ideaProjects/CADistributedComputing/Server/" + username));
+
+        fileChooser.showOpenDialog(this);
+        String filePathDownload =  fileChooser.getSelectedFile().getAbsolutePath();
+        File file = new File(filePathDownload);
+        System.out.println(file.getName());
+        String filename = file.getName();
         this.helper = new ClientHelper(hostname,port);
 
         String message = "103" + "," + username + "," + filename + ",";
         String messageReturned = helper.getEcho(message);
-        DatagramSplit file = new DatagramSplit(messageReturned);
+        DatagramSplit fileData = new DatagramSplit(messageReturned);
 
-        if(file.getProtocolNumber() == 504 ){
+        if(fileData.getProtocolNumber() == 504 ){
             String directory = "Client/" + username.trim() + "/";
             new File(directory).mkdir();
-            Path path = Paths.get( directory  + file.getFileName());
+            Path path = Paths.get( directory  + fileData.getFileName());
             Path parentDir = Paths.get( directory);
             if (!Files.exists(parentDir))
                 Files.createDirectories(parentDir);
-            Files.write(path, file.getData());
+            Files.write(path, fileData.getData());
 
             JOptionPane.showMessageDialog(null,"File Download Successful","Successful Download",
                     JOptionPane.INFORMATION_MESSAGE);
         }
-        else if(file.getProtocolNumber() == 503){
+        else if(fileData.getProtocolNumber() == 503){
             JOptionPane.showMessageDialog(null,"please log in before downloading a file","Unsuccessful Download",
                     JOptionPane.ERROR_MESSAGE);
         }
-        else if(file.getProtocolNumber() == 506){
+        else if(fileData.getProtocolNumber() == 506){
             JOptionPane.showMessageDialog(null,"No such file exists","Unsuccessful Download",
                     JOptionPane.ERROR_MESSAGE);
         }
