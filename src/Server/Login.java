@@ -69,9 +69,7 @@ class Login {
         }
     }
 
-
     public VerifyUser getCurrentUser(DatagramSplit data){
-
         VerifyUser user = new VerifyUser("",false);
         Iterator<LoggedInUser> it = loggedInUsers.iterator();
         while (it.hasNext()) {

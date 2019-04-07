@@ -25,19 +25,4 @@ public class FilePacket{
         System.arraycopy(byteArr2, 0, concatenatedByteArrays, byteArr1.length, byteArr2.length);
         return concatenatedByteArrays;
     }
-
-    public static ArrayList<String> splitDataIntoList(byte [] data) {
-        String downLoadedFile = new String(data);
-        ArrayList<String> listAsArray = new ArrayList(Arrays.asList(downLoadedFile.split(",")));
-        listAsArray.remove(0);
-
-        return listAsArray;
-    }
-
-
-
-
-
-
-
 }

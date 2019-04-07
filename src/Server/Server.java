@@ -39,9 +39,6 @@ public class Server {
                         System.out.println("Logout Request");
                         login.logoutRequest(clientData, mySocket);
                         break;
-                    case 105:
-                        System.out.println("Get All Files Request.");
-                        fileManager.getAllFilesFromFolder(clientData, mySocket);
                     default:
                         System.out.println("Unknown Request.");
                 }

@@ -35,22 +35,7 @@ public class FileManager {
             socket.sendMessage(datagramSplit.getAddress(), datagramSplit.getPortNo(), "502");
         }
     }
-
-    public void getAllFilesFromFolder(DatagramSplit data, ServerDatagramSocket socket) throws IOException {
-        File folder = new File("Server/" + data.getName().trim());
-        File[] listOfFiles = folder.listFiles();
-        String protocolNum = "505";
-        String filesAsString =  protocolNum + ",";
-
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isFile()) {
-                filesAsString += listOfFiles[i].getName() + ',';
-            }
-        }
-
-        byte [] filesBytes = filesAsString.getBytes();
-        socket.sendFile(data.getAddress(), data.getPortNo(), filesBytes);
-    }
+    
 
     public void downloadFileFromServer(DatagramSplit data, ServerDatagramSocket socket, Login login) throws IOException{
         Login loggedIn = login;
