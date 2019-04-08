@@ -52,16 +52,14 @@ public class UploadDownload extends Component {
 
         String username = userName;
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File
-               (System.getProperty("user.home") + System.getProperty("file.separator")+ "ideaProjects/CADistributedComputing/Server/" + username));
-
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home") + System.getProperty("file.separator") +
+                "ideaProjects/CADistributedComputing/Server/" + username));
         fileChooser.showOpenDialog(this);
         String filePathDownload =  fileChooser.getSelectedFile().getAbsolutePath();
         File file = new File(filePathDownload);
-        System.out.println(file.getName());
         String filename = file.getName();
-        this.helper = new ClientHelper(hostname,port);
 
+        this.helper = new ClientHelper(hostname,port);
         String message = "103" + "," + username + "," + filename + ",";
         String messageReturned = helper.getEcho(message);
         DatagramSplit fileData = new DatagramSplit(messageReturned);
@@ -73,6 +71,7 @@ public class UploadDownload extends Component {
             Path parentDir = Paths.get( directory);
             if (!Files.exists(parentDir))
                 Files.createDirectories(parentDir);
+
             Files.write(path, fileData.getData());
 
             JOptionPane.showMessageDialog(null,"File Download Successful","Successful Download",

@@ -21,7 +21,7 @@ public class DatagramSplit {
 
 
         if(this.protocolNumber == 101 || this.protocolNumber == 104){
-            setNameWithPassword(packet.getData());
+            setName(packet.getData());
             setPassword(packet.getData());
         }else if(this.protocolNumber == 105){
             setName(packet.getData());
@@ -45,10 +45,6 @@ public class DatagramSplit {
         this.name = list.get(1);
     }
 
-    public void setNameWithPassword(byte [] data){
-        List<String> list = splitDataGramIntoList(data);
-        this.name = list.get(1);
-    }
 
     public String getPassword() {
         return password;
