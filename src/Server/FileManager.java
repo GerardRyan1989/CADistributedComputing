@@ -49,14 +49,19 @@ public class FileManager {
             File folder = new File("Server/" + data.getName().trim());
             File[] listOfFiles = folder.listFiles();
 
-            for (int i = 0; i < listOfFiles.length; i++) {
-                if (listOfFiles[i].isFile()) {
-                   if(listOfFiles[i].getName().equals(nameOfFile)) {
-                       fileExsists = true;
-                       break;
-                   }
+            try{
+                for (int i = 0; i < listOfFiles.length; i++) {
+                    if (listOfFiles[i].isFile()) {
+                        if(listOfFiles[i].getName().equals(nameOfFile)) {
+                            fileExsists = true;
+                            break;
+                        }
+                    }
                 }
+            }catch(Exception e){
+                e.printStackTrace();
             }
+
 
             if(fileExsists == true ){
                 Path path = Paths.get(  "Server/" + username.trim() + "/" + nameOfFile.trim());
