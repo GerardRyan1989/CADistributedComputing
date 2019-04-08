@@ -21,7 +21,6 @@ public class FileManager {
         byte [] file = datagramSplit.getData();
 
         if(user.isValid()){
-            new File(user.getUserName()).mkdir();
             String directory = "Server/" + user.getUserName().trim();
             Path path = Paths.get(directory + "/" + nameOfFile.trim());
             Path parentDir = Paths.get(directory);;
