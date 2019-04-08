@@ -35,7 +35,7 @@ public class FileManager {
             socket.sendMessage(datagramSplit.getAddress(), datagramSplit.getPortNo(), "502");
         }
     }
-    
+
 
     public void downloadFileFromServer(DatagramSplit data, ServerDatagramSocket socket, Login login) throws IOException{
         Login loggedIn = login;

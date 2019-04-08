@@ -28,7 +28,7 @@ public class ServerDatagramSocket extends DatagramSocket {
         return message;
     } //end receiveMessage
 
-    public DatagramSplit receiveMessageAndSender( ) throws IOException {
+    public DatagramSplit receiveMessageAsDatagramSplit( ) throws IOException {
         byte[ ] receiveBuffer = new byte[MAX_LEN];
         DatagramPacket datagram = new DatagramPacket(receiveBuffer, MAX_LEN);
         this.receive(datagram);
@@ -39,11 +39,11 @@ public class ServerDatagramSocket extends DatagramSocket {
     } //end receiveMessage
 
 
-    public String sendFile(InetAddress receiverHost, int receiverPort, byte[] file) throws IOException {
+    public void sendFile(InetAddress receiverHost, int receiverPort, byte[] file) throws IOException {
         DatagramPacket datagram = new DatagramPacket(file, file.length, receiverHost, receiverPort);
         this.send(datagram);
-        String receiveMessage = receiveMessage();
-        return receiveMessage;
+        //String receiveMessage = receiveMessage();
+        //return receiveMessage;
     }
 } //end class
 

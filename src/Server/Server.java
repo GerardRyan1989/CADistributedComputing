@@ -20,7 +20,7 @@ public class Server {
             FileManager fileManager = new FileManager();
 
             while (true) {
-                DatagramSplit clientData = mySocket.receiveMessageAndSender();
+                DatagramSplit clientData = mySocket.receiveMessageAsDatagramSplit();
 
                 switch (clientData.protocolNumber) {
                     case 101:

@@ -90,6 +90,8 @@ public class UploadDownload extends Component {
             JOptionPane.showMessageDialog(null,"File download Unsuccessful something went wrong",
                     "Unsuccessful Download", JOptionPane.ERROR_MESSAGE);
         }
+
+        this.helper.done();
    }
 }
 
